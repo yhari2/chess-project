@@ -6,6 +6,13 @@ class ScoreSheet(object):
         self.blackMoves = None
 
 
+    # translate the algebraic notation to MRN - machine readable notation
+    def convertMove(self, move):
+        piece = ""
+        for char in move:
+
+
+
     # takes in file of score from game
     def getMoves(self, scoreFile):
         count = 0
@@ -14,7 +21,7 @@ class ScoreSheet(object):
             for record in f.split("\n"):
                 moves = record.split(" ")
                 for move in moves:
-                    move = convertMove(move)
+                    move = self.convertMove(move)
                     if(count%2 == 0):
                         self.whiteMoves.append(move)
                     else: 
