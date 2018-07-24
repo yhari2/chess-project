@@ -3,17 +3,21 @@ import string
 class Piece(object):
     def __init__(self, name, color, currentSquare):
         self.name = name
-        self.color = color
+        self.color = color.tolower()
         self.currentSquare = currentSquare
         self.hasMoved = False
         self.possibleMoves = None
         self.directions = []
 
-    def getPossibleMoves(self, board):
-        return None
-
     def __repr__(self):
         return self.toString()
+
+    def __getHashables(self):
+        return (self.name, self.color, self.currentSquare, self.hasMoved)
+
+
+    def __hash__(self):
+        return hash(self.__getHashables())
 
     # checks if either file/rank is on the board
     def isInBounds(self, elem):
@@ -78,7 +82,7 @@ class Piece(object):
             self.currentSquare = newSquare
 
 
-    def getPossibleMoves(self, board):
+    def updatePossibleMoves(self, board):
         result = []
         (currFile, currRank) = self.currentSquare
 
@@ -91,7 +95,7 @@ class Piece(object):
                     self.isInBounds(newFile))): 
                     break
 
-                if(self.isInBounds(newRank) and 
+                if(self.isInBounds (newRank) and 
                     self.isInBounds(newFile) and
                     board[newRank][newFile] != None and 
                     board[newRank][newFile].color == self.color):
@@ -184,6 +188,8 @@ class Bishop(Piece):
 
 
 class King(Piece):
+    # TODO: add castling, isInCheck functions
+
     def __init__(self, color, currentSquare, name = "King"):
         super().__init__(name, color, currentSquare)
         self.directions = [(1, 1), (-1, -1), (-1, 1), (-1, -1), 
